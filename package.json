@@ -1,8 +1,23 @@
 {
-  "name": "nue.js",
+  "name": "little-vue",
   "version": "0.1.0",
   "description": "",
-  "main": "nue.js",
+  "main": "dist/little-vue.js",
   "author": "NossiKa",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack --config build/webpack.build.config.js"
+  },
+  "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-latest": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "html-webpack-plugin": "^2.29.0",
+    "webpack": "^3.2.0"
+  }
 }

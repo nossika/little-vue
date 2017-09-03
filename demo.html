@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Nue.js - demo</title>
+    <title>little-vue - demo</title>
     <style>
         *{
             padding: 0; margin: 0; border: none; outline: none;  }
@@ -105,7 +105,7 @@
     <br/>
     <div>the time is: {{ this.time }}</div>
     <br/>
-    <div>num: {{this.num}}<span n-if="this.isEven">(even num)</span></div>
+    <div>num: {{this.num}}<span v-if="this.isEven">(even num)</span></div>
     <div @click="increaseNum">click to increase num!</div>
     <br/>
     <div :style="'background:' + this.color">
@@ -118,9 +118,9 @@
     </div>
 </div>
 
-<script src="./nue.js"><\/script>
+<script src="./dist/little-vue.js"><\/script>
 <script>
-const n = new Nue({
+const n = new Vue({
     el: '#app',
     data: {
         num: 0,
@@ -155,5 +155,6 @@ setInterval(() => {
     });
     run_btn.click();
 </script>
+
 </body>
 </html>
