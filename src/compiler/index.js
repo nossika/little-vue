@@ -16,13 +16,15 @@ function walkChildren (el, scope) {
 function walkAttributes (node, scope) {
     [].slice.call(node.attributes).forEach(attrNode => {
         let attr = getAttrInfo(attrNode);
-        compileAttribute(attr.type, {
-            scope,
-            name: attr.name,
-            exp: attr.value,
-            node
-        });
-        node.removeAttribute(attrNode.name);
+        if (attr.type !== 'raw') {
+            compileAttribute(attr.type, {
+                scope,
+                name: attr.name,
+                exp: attr.value,
+                node
+            });
+            node.removeAttribute(attrNode.name);
+        }
     });
 }
 
@@ -95,6 +97,8 @@ function getAttrInfo (attrNode) {
     } else if (name.match(/^@/)) {
         type = 'on';
         name = name.slice(1);
+    } else {
+        type = 'raw';
     }
     return { name, value, type };
 }

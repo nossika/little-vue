@@ -6,7 +6,8 @@
   "author": "NossiKa",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --config build/webpack.build.config.js"
+    "build": "webpack --config build/webpack.build.config.js",
+    "test": "karma start test/karma.base.config.js"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
@@ -18,6 +19,11 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "html-webpack-plugin": "^2.29.0",
+    "jasmine-core": "^2.8.0",
+    "karma": "^1.7.1",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.0",
+    "karma-webpack": "^2.0.4",
     "webpack": "^3.2.0"
   }
 }
