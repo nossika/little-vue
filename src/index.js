@@ -2,12 +2,41 @@ import Compiler from './compiler';
 import Observer from './observer';
 import { nextTick } from 'util';
 
+// 将options中的data、computed、methods挂载到Vue实例上
+function proxy (options) {
+    for (let prop in options.data) {
+        Reflect.defineProperty(this, prop, {
+            enumerable: true,
+            configurable: true,
+            get () {
+                return this.$options.data[prop];
+            },
+            set (newVal) {
+                this.$options.data[prop] = newVal;
+            }
+        })
+    }
+    for (let prop in options.computed) {
+        Reflect.defineProperty(this, prop, {
+            enumerable: true,
+            configurable: true,
+            get () {
+                return this.$options.computed[prop].call(this);
+            },
+            set (newVal) {
+
+            }
+        })
+    }
+    Object.assign(this, options.methods);
+}
+
 // Vue实例，用observer监听data，用compile编译el，compile过程中调用watcher实现el与data的绑定
 class Vue {
     constructor (options) {
         this.$options = options;
         new Observer(options.data);
-        this._proxy(options);
+        proxy.call(this, options);
         this.$el =
             typeof options.el === 'string'
             ? document.querySelector(options.el)
@@ -20,36 +49,8 @@ class Vue {
         }
         new Compiler(this.$el, this);
     }
-    // 将options中的data、computed、methods挂载到Vue实例上
-    _proxy (options) {
-        for (let prop in options.data) {
-            Reflect.defineProperty(this, prop, {
-                enumerable: true,
-                configurable: true,
-                get () {
-                    return this.$options.data[prop];
-                },
-                set (newVal) {
-                    this.$options.data[prop] = newVal;
-                }
-            })
-        }
-        for (let prop in options.computed) {
-            Reflect.defineProperty(this, prop, {
-                enumerable: true,
-                configurable: true,
-                get () {
-                    return this.$options.computed[prop].call(this);
-                },
-                set (newVal) {
-
-                }
-            })
-        }
-        Object.assign(this, options.methods);
-    }
     $nextTick (fn) {
-        nextTick(fn.bind(this));
+        typeof fn === 'function' && nextTick(fn.bind(this));
     }
 }
 

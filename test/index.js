@@ -15,15 +15,17 @@ describe('little-vue api test', () => {
                         <span v-if="false" data-false></span>
                     </span>
                     <span id="v-on" @click="onClick"></span>
+                    <span id="arr">{{ JSON.stringify(this.arr[this.arr.length - 1]) }}</span>
                 </div>`,
             data: {
                 text: 'text',
                 attr: 'attr',
-                clicked: false
+                clicked: false,
+                arr: ['a', 'r', 'r'],
             },
             computed: {
                 textLen () {
-                    return this.text.length
+                    return this.text.length;
                 }
             },
             methods: {
@@ -50,6 +52,14 @@ describe('little-vue api test', () => {
         expect(container.querySelector('[data-false]')).toBe(null);
     });
 
+    it('compile methods(v-on)', () => {
+        expect(vm.clicked).toBe(false);
+        let evt = document.createEvent('HTMLEvents');
+        evt.initEvent('click', true, true);
+        vm.$el.querySelector('#v-on').dispatchEvent(evt);
+        expect(vm.clicked).toBe(true);
+    });
+
     it('check reactive', (done) => {
         vm.text = 'text2';
         vm.attr = 'attr2';
@@ -61,11 +71,16 @@ describe('little-vue api test', () => {
         });
     });
 
-    it('compile methods(v-on)', () => {
-        expect(vm.clicked).toBe(false);
-        let evt = document.createEvent('HTMLEvents');
-        evt.initEvent('click', true, true);
-        vm.$el.querySelector('#v-on').dispatchEvent(evt);
-        expect(vm.clicked).toBe(true);
+    it('check reactive array', async (done) => {
+        let container = vm.$el.querySelector('#arr');
+        expect(container.innerText).toBe('"r"');
+        let item = {a: 1};
+        vm.arr.push(item);
+        await new Promise(resolve => vm.$nextTick(resolve));
+        expect(container.innerText).toBe(JSON.stringify(item));
+        item.a = 2;
+        await new Promise(resolve => vm.$nextTick(resolve));
+        expect(container.innerText).toBe(JSON.stringify(item));
+        done();
     });
 });
