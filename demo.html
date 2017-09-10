@@ -101,19 +101,19 @@
 <body>
 
 <div id="app">
-    <div>{{this.title.greeting.join('')}}</div>
+    <div>{{ title.greeting.join('') }}</div>
     <br/>
-    <div>the time is: {{ this.time }}</div>
+    <div>the time is: {{ time }}</div>
     <br/>
-    <div>num: {{this.num}}<span v-if="this.isEven">(even num)</span></div>
+    <div>num: {{num}}<span v-if="isEven">(even num)</span></div>
     <div @click="increaseNum">click to increase num!</div>
     <br/>
-    <div :style="'background:' + this.color">
+    <div :style="'background:' + color">
         <div>mouseenter to change background!</div>
         <div>
-            <span @mouseenter="this.color = 'red'">red!</span>
-            <span @mouseenter="this.color = 'blue'">blue!</span>
-            <span @mouseenter="this.color = 'yellow'">yellow!</span>
+            <span @mouseenter="color = 'red'">red!</span>
+            <span @mouseenter="color = 'blue'">blue!</span>
+            <span @mouseenter="color = 'yellow'">yellow!</span>
         </div>
     </div>
 </div>
@@ -144,7 +144,7 @@ const n = new Vue({
 
 setInterval(() => {
     n.time = new Date();
-}, 300);
+}, 1000);
 
 <\/script>
 </body>
