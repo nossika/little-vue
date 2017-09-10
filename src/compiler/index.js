@@ -104,15 +104,16 @@ function getAttrInfo (attrNode) {
 }
 
 function textToExp (text) {
-    let [regMatch, regReplace] = [/\{\{(.+?)}}/g, /\{\{|}}/g];
-    let pieces = text.split(regMatch);
-    let expMatches = (text.match(regMatch) || []).map(match => match.replace(regReplace, ''));
-    let arr = [];
-    pieces.forEach(piece => {
-        if (!expMatches.includes(piece)) piece = '`' + piece.replace(/`/g, '\\`') + '`';
-        arr.push(piece);
+    let pieces = text.split(/({{.+?}})/g);
+    pieces = pieces.map(piece => {
+        if (piece.match(/{{.+?}}/g)) { // {{}}内的代码，以js表达式输出
+            piece = '(' + piece.replace(/^{{|}}$/g, '') + ')';
+        } else { // {{}}外的代码，以字符串输出
+            piece = '`' + piece.replace(/`/g, '\\`') + '`'; // 需要对字符串中的`转义
+        }
+        return piece;
     });
-    return arr.join('+');
+    return pieces.join('+');
 }
 
 // 编译dom，将dom中的表达式片段用watcher绑定
