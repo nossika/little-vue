@@ -109,7 +109,7 @@ function textToExp (text) {
     let expMatches = (text.match(regMatch) || []).map(match => match.replace(regReplace, ''));
     let arr = [];
     pieces.forEach(piece => {
-        if (!expMatches.includes(piece)) piece = '`' + piece + '`';
+        if (!expMatches.includes(piece)) piece = '`' + piece.replace(/`/g, '\\`') + '`';
         arr.push(piece);
     });
     return arr.join('+');
