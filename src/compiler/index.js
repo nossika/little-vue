@@ -1,5 +1,5 @@
 import Watcher from '../watcher';
-import { nextTick, expToFunc } from 'util';
+import { expToFunc } from 'util';
 
 
 function walkChildren (el, scope) {
@@ -31,9 +31,7 @@ function walkAttributes (node, scope) {
 function compileText (node, scope) {
     let exp = textToExp(node.textContent);
     new Watcher(exp, scope, newVal => {
-        nextTick(() => {
-            node.textContent = newVal
-        });
+        node.textContent = newVal
     });
 }
 
@@ -54,9 +52,7 @@ function compileAttribute (type, params) {
         case 'bind':
         {
             new Watcher(exp, scope, newVal => {
-                nextTick(() => {
-                    node.setAttribute(name, newVal);
-                });
+                node.setAttribute(name, newVal);
             });
             break;
         }
@@ -73,13 +69,11 @@ function compileAttribute (type, params) {
             node.parentNode.insertBefore(placeholder, node);
             node.parentNode.removeChild(node);
             new Watcher(exp, scope, newVal => {
-                nextTick(() => {
-                    if (newVal && !node.parentNode) {
-                        placeholder.parentNode.insertBefore(node, placeholder);
-                    } else if (!newVal && node.parentNode) {
-                        node.parentNode.removeChild(node);
-                    }
-                });
+                if (newVal && !node.parentNode) {
+                    placeholder.parentNode.insertBefore(node, placeholder);
+                } else if (!newVal && node.parentNode) {
+                    node.parentNode.removeChild(node);
+                }
             });
             break;
         }

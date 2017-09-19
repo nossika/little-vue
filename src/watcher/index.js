@@ -1,5 +1,5 @@
 import Dep from '../dependence';
-import { expToFunc } from 'util';
+import { nextTick, expToFunc } from 'util';
 
 // 实现表达式、依赖、回调三者的绑定
 // 当依赖改变时，由observer触发其dep的notify，即调用dep列表中各watcher的update，从而重新计算表达式的值并调用绑定的回调函数更新dom
@@ -19,11 +19,13 @@ class Watcher {
         return value;
     }
     update () {
-        let newVal = this.get();
-        if (this.value !== newVal) {
-            this.value = newVal;
-            this.callback && this.callback(newVal);
-        }
+        nextTick(() => {
+            let newVal = this.get();
+            if (this.value !== newVal) {
+                this.value = newVal;
+                this.callback && this.callback(newVal);
+            }
+        });
     }
 }
 
