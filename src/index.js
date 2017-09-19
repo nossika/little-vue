@@ -47,7 +47,9 @@ class Vue {
         if (options.template) {
             this.$el.innerHTML = options.template;
         }
+        options.created && options.created.bind(this)();
         new Compiler(this.$el, this);
+        options.mounted && options.mounted.bind(this)();
     }
     $nextTick (fn) {
         typeof fn === 'function' && nextTick(fn.bind(this));

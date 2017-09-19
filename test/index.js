@@ -32,7 +32,7 @@ describe('little-vue api test', () => {
                 onClick () {
                     this.clicked = true;
                 }
-            }
+            },
         });
         vm.$nextTick(done);
     });
