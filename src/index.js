@@ -1,5 +1,6 @@
 import Compiler from './compiler';
-import Observer from './observer';
+// import Observer from './observer';
+import proxyObserver from './observer/proxy-observer';
 import { nextTick } from 'util';
 
 // 将options中的data、computed、methods挂载到Vue实例上
@@ -34,8 +35,9 @@ function proxy (options) {
 // Vue实例，用observer监听data，用compile编译el，compile过程中调用watcher实现el与data的绑定
 class Vue {
     constructor (options) {
+        options.data = proxyObserver(options.data);
+        // new Observer(options.data);
         this.$options = options;
-        new Observer(options.data);
         proxy.call(this, options);
         this.$el =
             typeof options.el === 'string'

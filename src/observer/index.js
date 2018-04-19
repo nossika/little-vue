@@ -45,7 +45,8 @@ const reactiveArrayProto = (() => {
 function observe (obj, dep) {
     if (Array.isArray(obj) && dep) {
         obj.__dep__ = dep;
-        obj.__proto__ = reactiveArrayProto;
+        // obj.__proto__ = reactiveArrayProto;
+        Reflect.setPrototypeOf(obj, reactiveArrayProto);
         obj.forEach(item => observe(item, dep));
     } else if (typeof obj === 'object') {
         for (let prop in obj) {
